@@ -1,67 +1,30 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  decrement,
-  increment,
-  incrementByAmount,
-  incrementAsync,
-  incrementIfOdd,
-  selectCount,
-} from "./redux/counter/counterSlice";
-import styles from './styles/Counter.module.css';
+import ToDoData from './components/todo/ToDoData';
+import ToDoNew from './components/todo/ToDoNew';
+import './styles/TodoStyle.css';
+import reactLogo from './assets/react.svg';
+import { useState } from 'react';
 
 export default function App() {
-  const count = useSelector(selectCount);
-  const dispatch = useDispatch();
-  const [incrementAmount, setIncrementAmount] = useState('2');
+const [todoList , setTodoList] = useState([{id : 1 , title : "Learning React"} , {id : 2 , title : "Watching Youtube"}]);
 
-  const incrementValue = Number(incrementAmount) || 0;
+function randomIntFromInterval(min, max) { // min and max included 
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
 
+const updateData = (name) => {
+    const rndInt = randomIntFromInterval(10, 10000);  
+    setTodoList([...todoList , {id : rndInt , title : name} ])
+}
   return (
-    <div>
-      <div className={styles.row}>
-        <button
-          className={styles.button}
-          aria-label="Decrement value"
-          onClick={() => dispatch(decrement())}
-        >
-          -
-        </button>
-        <span className={styles.value}>{count}</span>
-        <button
-          className={styles.button}
-          aria-label="Increment value"
-          onClick={() => dispatch(increment())}
-        >
-          +
-        </button>
-      </div>
-      <div className={styles.row}>
-        <input
-          className={styles.textbox}
-          aria-label="Set increment amount"
-          value={incrementAmount}
-          onChange={(e) => setIncrementAmount(e.target.value)}
-        />
-        <button
-          className={styles.button}
-          onClick={() => dispatch(incrementByAmount(incrementValue))}
-        >
-          Add Amount
-        </button>
-        <button
-          className={styles.asyncButton}
-          onClick={() => dispatch(incrementAsync(incrementValue))}
-        >
-          Add Async
-        </button>
-        <button
-          className={styles.button}
-          onClick={() => dispatch(incrementIfOdd(incrementValue))}
-        >
-          Add If Odd
-        </button>
-      </div>
-    </div>
-  );
+      <>
+            <div className="todo-container">
+                <div className="todo-title">Todo List</div>
+                <ToDoNew updateData  = {updateData} />
+                <ToDoData todoList = {todoList} />
+                <div className='todo-image'>
+                  <img src={reactLogo} alt="" style={{fontSize: 100}} />
+                </div>
+            </div>
+      </>
+  ) 
 }
